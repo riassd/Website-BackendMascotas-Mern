@@ -86,10 +86,7 @@ export class usuarioController {
     let contenido = `Hola ${usuario.nombre}, su usuario es ${usuario.correo} y su contraseña es ${Contrasena}`;
     const cuerpo = `¡Hola <strong>${usuario.nombre}</strong>! </br>Bienvenid@ a DogFood. </br>Tu clave de acceso al portal es: <strong>${Contrasena}</strong> </br> Por favor no compartas tu clave con nadie.`;
     this.servicioNotificacion.enviarCorreo(destino, asunto, cuerpo);
-    // fetch(`http://127.0.0.1:5000/email?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
-    //   .then((data: any) => {
-    //     console.log(data);
-    //   })
+
     return p;
   }
   //@authenticate.skip()
