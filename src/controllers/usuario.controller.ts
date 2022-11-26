@@ -29,7 +29,7 @@ export class usuarioController {
     public usuarioRepository: UsuarioRepository,
     @service(AutenticacionService)
     public servicioAutenticacion: AutenticacionService,
-
+    @service(NotificacionService)
     public servicioNotificacion: NotificacionService,
   ) { }
 
