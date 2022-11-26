@@ -1,5 +1,5 @@
-import { authenticate } from '@loopback/authentication';
-import { service } from '@loopback/core';
+import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -20,20 +20,22 @@ import {
   response,
   HttpErrors,
 } from '@loopback/rest';
-import { Credenciales, Usuario } from '../models';
-import { UsuarioRepository } from '../repositories';
-import { AutenticacionService } from '../services';
+import {Credenciales, Usuario} from '../models';
+import {UsuarioRepository} from '../repositories';
+import {AutenticacionService, NotificacionService} from '../services';
 const fetch = require('node-fetch');
 export class usuarioController {
   constructor(
     @repository(UsuarioRepository)
     public usuarioRepository: UsuarioRepository,
     @service(AutenticacionService)
-    public servicioAutenticacion: AutenticacionService
+    public servicioAutenticacion: AutenticacionService,
+
+    public servicioNotificacion: NotificacionService,
   ) { }
 
   @post('/identificarUsuario', {
-    responses: { '200': { description: 'Identificacion de usuario' } }
+    responses: {'200': {description: 'Identificacion de usuario'}}
   })
   async identificarUsuario(
     @requestBody() Credenciales: Credenciales
@@ -58,7 +60,7 @@ export class usuarioController {
   @post('/usuarios')
   @response(200, {
     description: 'usuario model instance',
-    content: { 'application/json': { schema: getModelSchemaRef(Usuario) } },
+    content: {'application/json': {schema: getModelSchemaRef(Usuario)}},
   })
   async create(
     @requestBody({
@@ -82,17 +84,19 @@ export class usuarioController {
     let destino = usuario.correo;
     let asunto = 'Bienvenida y credenciales de acceso';
     let contenido = `Hola ${usuario.nombre}, su usuario es ${usuario.correo} y su contraseña es ${Contrasena}`;
-    fetch(`https://mensajeria-7at2oiqx0-riassd.vercel.app/email?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
-      .then((data: any) => {
-        console.log(data);
-      })
+    const cuerpo = `¡Hola <strong>${usuario.nombre}</strong>! </br>Bienvenid@ a DogFood. </br>Tu clave de acceso al portal es: <strong>${Contrasena}</strong> </br> Por favor no compartas tu clave con nadie.`;
+    this.servicioNotificacion.enviarCorreo(destino, asunto, cuerpo);
+    // fetch(`http://127.0.0.1:5000/email?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+    //   .then((data: any) => {
+    //     console.log(data);
+    //   })
     return p;
   }
-//@authenticate.skip()
+  //@authenticate.skip()
   @get('/usuarios/count')
   @response(200, {
     description: 'usuario model count',
-    content: { 'application/json': { schema: CountSchema } },
+    content: {'application/json': {schema: CountSchema}},
   })
   async count(
     @param.where(Usuario) where?: Where<Usuario>,
@@ -107,7 +111,7 @@ export class usuarioController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(Usuario, { includeRelations: true }),
+          items: getModelSchemaRef(Usuario, {includeRelations: true}),
         },
       },
     },
@@ -121,13 +125,13 @@ export class usuarioController {
   @patch('/usuarios')
   @response(200, {
     description: 'usuario PATCH success count',
-    content: { 'application/json': { schema: CountSchema } },
+    content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Usuario, { partial: true }),
+          schema: getModelSchemaRef(Usuario, {partial: true}),
         },
       },
     })
@@ -142,13 +146,13 @@ export class usuarioController {
     description: 'usuario model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(Usuario, { includeRelations: true }),
+        schema: getModelSchemaRef(Usuario, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Usuario, { exclude: 'where' }) filter?: FilterExcludingWhere<Usuario>
+    @param.filter(Usuario, {exclude: 'where'}) filter?: FilterExcludingWhere<Usuario>
   ): Promise<Usuario> {
     return this.usuarioRepository.findById(id, filter);
   }
@@ -162,7 +166,7 @@ export class usuarioController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Usuario, { partial: true }),
+          schema: getModelSchemaRef(Usuario, {partial: true}),
         },
       },
     })
