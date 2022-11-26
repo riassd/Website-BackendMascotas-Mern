@@ -2,9 +2,11 @@ import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {UsuarioRepository} from '../repositories';
 const sgMail = require('@sendgrid/mail');
+require('dotenv').config();
 @injectable({scope: BindingScope.TRANSIENT})
 export class NotificacionService {
   constructor(
+    
     /* Add @inject to inject parameters */
     @repository(UsuarioRepository)
     public usuarioRepository: UsuarioRepository,
