@@ -23,10 +23,10 @@ export class Plan extends Entity {
   descripcion: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  precio: number;
+  precio: string;
 
   @hasMany(() => Mascota)
   mascotas: Mascota[];
