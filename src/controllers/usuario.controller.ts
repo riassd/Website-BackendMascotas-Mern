@@ -23,7 +23,6 @@ import {
 import {Credenciales, Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
 import {AutenticacionService, NotificacionService} from '../services';
-const fetch = require('node-fetch');
 export class usuarioController {
   constructor(
     @repository(UsuarioRepository)
@@ -83,7 +82,6 @@ export class usuarioController {
     //Notificar al nuevo usuario del sistema
     let destino = usuario.correo;
     let asunto = 'Bienvenida y credenciales de acceso';
-    let contenido = `Hola ${usuario.nombre}, su usuario es ${usuario.correo} y su contraseña es ${Contrasena}`;
     const cuerpo = `¡Hola <strong>${usuario.nombre}</strong>! </br>Bienvenid@ a DogFood. </br>Tu clave de acceso al portal es: <strong>${Contrasena}</strong> </br> Por favor no compartas tu clave con nadie.`;
     this.servicioNotificacion.enviarCorreo(destino, asunto, cuerpo);
 
