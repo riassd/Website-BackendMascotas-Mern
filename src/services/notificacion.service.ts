@@ -27,7 +27,4 @@ export class NotificacionService {
       });
   }
 
-  /*
-   * Add service methods here
-   */
 }
