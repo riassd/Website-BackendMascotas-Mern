@@ -82,7 +82,7 @@ export class usuarioController {
     let destino = usuario.correo;
     let asunto = 'Bienvenida y credenciales de acceso';
     let contenido = `Hola ${usuario.nombre}, su usuario es ${usuario.correo} y su contraseña es ${Contrasena}`;
-    fetch(`http://127.0.0.1:5000/email?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+    fetch(`https://mensajeria-7at2oiqx0-riassd.vercel.app/email?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
       .then((data: any) => {
         console.log(data);
       })
